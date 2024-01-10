@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<!-- 프로젝트 연관 정보 -->
+		<!-- groupId : 프로젝트의 그룹 ID -->
+		<groupId>org.springframework.boot</groupId>
+		<!-- artifactId : 프로젝트 아티팩트 ID 설정 -->
+		<!-- spring-boot-starter-parent : 프로젝트에서 사용하는 다양한 라이브러리 간의 버전 충돌 문제 발생 방지
+			(적합한 버전이 무엇인지, 다른 것과 충돌하지 않는지에 대한 정보가 담겨있음)
+			의존성 조합간 충돌 문제가 없는 검증된 버전 정보 조합을 제공 -->
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<!-- version : 프로젝트의 버전 -->
+		<version>2.5.1</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.example</groupId>
+	<artifactId>testproject</artifactId>
+	<version>1.0.0</version>
+	<!-- packaging : jar인지 war인지 -->
+	<packaging>jar</packaging>
+	
+	<!-- 프로젝트 기본 정보 -->
+	<!-- name : 프로젝트명 -->
+	<name>testproject</name>
+	<!-- description : 프로젝트에 대한 간단한 설명-->
+	<description>side project for Spring Boot by heejungkim </description>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
+		<!-- dependencies : 각 라이브러리의 정보를 담는 태그-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<!-- spring-boot-starter-web : Spring MVC를 사용한 REST 서비스를 개발하는데 사용 -->
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<!-- optional : 다른 프로젝트에서 이 프로젝트를 의존성 설정을 할 경우 사용할지 결정 -->
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<!-- lombok : 어노테이션 쓸 수 있게하는 라이브러리 -->
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<!-- spring-boot-starter-test : 스프링 어플리케이션의 테스트 기능 제공 -->
+			<artifactId>spring-boot-starter-test</artifactId>
+			<!-- scope : 해당 라이브러리의 이용범위를 지정 -->
+			<!-- 
+				scope 태그의 종류
+				
+				compile (default) : 아무것도 지정되지 않았을 경우 설정되는 값
+				이 값으로 설정하는 경우 모든 클래스 경로에서 사용할 수 있음
+				컴파일 및 배포 상황에서 같이 제공됨
+				
+				provided :compile과 유사하지만 JDK 혹은 Container가 런타임 시에만 제공
+				컴파일 혹은 테스트 경로에서만 사용, 배포 시에는 빠짐
+				
+				runtime : 컴파일 시에는 사용하지 않고, 실행 상황에서만 사용됨
+				런타임과 테스트 경로에서는 있지만, 컴파일 클래스 경로에는 존재하지 않음
+				(컴파일 할 때 검증하지 않아도 되고, 실행할 때 그대로 사용하게끔 세팅할 것)
+				
+				test : 테스트 상황에서만 사용되는 라이브러리
+				실 가동 상황에서는 필요 없는 라이브러리를 사용할 경우에 설정
+				종속된 다른 프로젝트에는 영향을 미치지 않음 
+				
+				system(잘 사용 안함) : provide와 유사하지만, 저장소에서(레포지토리에서) 관리되지 않고 직접 관리하는 JAR를 추가
+				systemPath를 추가해서 작성해야 함
+				 
+			-->
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
