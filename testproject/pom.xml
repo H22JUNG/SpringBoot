@@ -12,14 +12,14 @@
 			의존성 조합간 충돌 문제가 없는 검증된 버전 정보 조합을 제공 -->
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<!-- version : 프로젝트의 버전 -->
-		<version>2.5.1</version>
+		<version>3.2.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>testproject</artifactId>
 	<version>1.0.0</version>
 	<!-- packaging : jar인지 war인지 -->
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	
 	<!-- 프로젝트 기본 정보 -->
 	<!-- name : 프로젝트명 -->
@@ -80,6 +80,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+<!--		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>2.9.2</version>
@@ -89,7 +95,7 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>

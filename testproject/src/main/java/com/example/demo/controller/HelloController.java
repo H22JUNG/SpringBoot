@@ -9,7 +9,11 @@ public class HelloController {
 	@RequestMapping(value = "/hello")
 	// @GetMapping("hello")
 	public String hello(){
-		return "Hello World";		
+		
+		String getVersion = org.springframework.core.SpringVersion.getVersion();
+
+		System.out.println(getVersion);
+		return getVersion;		
 	}
 
 }
