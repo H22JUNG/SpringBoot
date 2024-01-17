@@ -1,5 +1,7 @@
 package com.example.demo.data.dto;
 
+import com.example.demo.data.entity.ProductEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +20,13 @@ public class ProductDto {
 	private int productPrice;
 	private int productStock;
 	
+	public ProductEntity toEntity() {
+		return ProductEntity.builder()
+				.productId(productId)
+				.productName(productName)
+				.productPrice(productPrice)
+				.productStock(productStock)
+				.build();
+	}
 	
 }

@@ -1,5 +1,6 @@
 package com.example.demo.data.dao.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.data.dao.ProductDAO;
@@ -11,6 +12,8 @@ public class ProductDAOImpl implements ProductDAO{
 
 	ProductRepository productRepository;
 	
+	
+	@Autowired
 	public ProductDAOImpl(ProductRepository productRepository) {
 		this.productRepository = productRepository;
 	}

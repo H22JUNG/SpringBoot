@@ -1,5 +1,7 @@
 package com.example.demo.data.entity;
 
+import com.example.demo.data.dto.ProductDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -11,15 +13,12 @@ import lombok.Setter;
 
 // @Entity : 해당 클래스가 entity임을 뜻함
 @Entity
-
-// 아래 4개는 @Data로 퉁쳐도 됨
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Builder
-@Table(name = "shop")
+@Table(name = "product")
 public class ProductEntity {
 
 	@Id		// pk
@@ -27,5 +26,15 @@ public class ProductEntity {
 	String productName;
 	Integer productPrice;
 	Integer productStock;
+	
+	
+	public ProductDto toDto() {
+		return ProductDto.builder()
+				.productId(productId)
+				.productName(productName)
+				.productPrice(productPrice)
+				.productStock(productStock)
+				.build();
+	}
 	
 }
