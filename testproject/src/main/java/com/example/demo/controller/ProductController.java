@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.data.dto.ProductDto;
 import com.example.demo.service.ProductService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/product-api")
@@ -45,15 +49,25 @@ public class ProductController {
 	}
 	
 	 @PostMapping("/product")
-	 public ProductDto createProduct(@RequestBody ProductDto productDto) {
+	 public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) {
+		 
+		 // Validation 어노테이션을 사용하지 않았을 때의 코드 예시
+		 if (productDto.getProductId().equals("") || productDto.getProductId().isEmpty()) {
+			 LOGGER.error("[createProduct] failed Response :: productId is Empty");
+			 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(productDto);
+		 }
 		 
 		 String productId = productDto.getProductId();
 		 String productName = productDto.getProductName();
 		 int productPrice = productDto.getProductPrice();
 		 int productStock = productDto.getProductStock();
 
+		 ProductDto response = productService.saveProduct(productId, productName, productPrice, productStock);
 		 
-		 return productService.saveProduct(productId, productName, productPrice, productStock);
+		 LOGGER.info("[createProduct] Response >> productId : {}, productName : {}, productPrice: {}, productStock : {}",
+				 response.getProductId(), response.getProductName(), response.getProductPrice(), response.getProductStock());
+		 
+		 return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
 	 }
 	
 
