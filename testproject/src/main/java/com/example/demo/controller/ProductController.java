@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus.Series;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.common.Constants;
+import com.example.demo.common.Constants.ExceptionClass;
+import com.example.demo.common.exception.testProjectException;
 import com.example.demo.data.dto.ProductDto;
 import com.example.demo.service.ProductService;
 
@@ -74,5 +78,14 @@ public class ProductController {
 	 @DeleteMapping("/product/{productId}")
 	 public ProductDto deleteProduct(@PathVariable String productId) {
 		 return null;
+	 }
+	 
+	 @PostMapping(value = "/product/exception")
+	 public void exceptionTest() throws testProjectException {
+
+		 throw new testProjectException(ExceptionClass.PRODUCT, HttpStatus.BAD_REQUEST, "의도한 에러가 발생");
+		 // (enum에서 정의한 Product 클래스,
+		 //	BAD_REQUEST(400, Series.CLIENT_ERROR, "Bad Request"),
+		 // 디테일 메시지)
 	 }
 }
