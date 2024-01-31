@@ -33,7 +33,6 @@ public class ShortUrlController {
 		this.shortUrlService = shortUrlService;
 	}
 	
-	// shortUrl이 있으면 조회, 없으면 generate
 	@PostMapping
 	public ShortUrlResponseDto generateShortUrl(String originalUrl) {
 		
