@@ -45,7 +45,7 @@ public class ShortUrlController {
 	public ShortUrlResponseDto getShortUrl(String originalUrl) {
 		ShortUrlResponseDto shortUrlResponseDto = new ShortUrlResponseDto("ss", "ss");
 		
-		return shortUrlResponseDto.getShortUrl(CLIENT_ID, CLIENT_SECRET, originalUrl);
+		return shortUrlService.getShortUrl(CLIENT_ID, CLIENT_SECRET, originalUrl);
 	}
 	
 	@PutMapping("/")

@@ -1,10 +1,19 @@
 package com.example.demo.data.dto;
 
-public class ShortUrlResponseDto {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-	private String clientId;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Builder
+public class ShortUrlResponseDto {
 	
-	private String clientSecret;
+	private String orgUrl;
 	
-	private String originalUrl;
+	private String shortUrl;
 }

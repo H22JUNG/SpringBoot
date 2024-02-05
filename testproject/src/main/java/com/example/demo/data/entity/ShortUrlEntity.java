@@ -1,22 +1,37 @@
 package com.example.demo.data.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Data;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
-@Data
-public class ShortUrlEntity {
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "short_url")
+public class ShortUrlEntity extends BaseEntity{
 
 	@Id
-	@GeneratedValue
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 	// GenerationType.IDENTITY : 알아서 테이블을 읽어서 인덱스 번호 가져옴
+	private Long id;
 	
-	@Column
+	@Column(nullable= false, unique = true)
+	private String hash;
+	
+	@Column(nullable= false, unique = true)
+	private String url;
+	
+	@Column(nullable= false, unique = true)
 	private String orgUrl;
-	
-	@Column
-	private String shortUrl;
 	
 }

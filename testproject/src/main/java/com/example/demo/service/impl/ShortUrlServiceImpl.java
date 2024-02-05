@@ -5,10 +5,16 @@ import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.example.demo.data.dao.ShortUrlDAO;
+import com.example.demo.data.dto.NaverUriDto;
 import com.example.demo.data.dto.ShortUrlResponseDto;
 import com.example.demo.data.entity.ShortUrlEntity;
 import com.example.demo.service.ShortUrlService;
@@ -22,7 +28,7 @@ public class ShortUrlServiceImpl implements ShortUrlService{
 	public ShortUrlResponseDto generateShortUrl(String clientId, String clientSecret, String originalUrl) {
 		LOGGER.info("[generateShortUrl] request data : {}", originalUrl);
 		
-		ResponseEntity<NaverUriDto> responseEntity = requestShortUrl(clientId, clientSecret,originalUrl);
+		ResponseEntity<NaverUriDto> responseEntity = requestShortUrl(clientId, clientSecret, originalUrl);
 		
 		String orgUrl = responseEntity.getBody().getResult().getOrgUrl();
 		String shortUrl = responseEntity.getBody().getResult().getUrl();
@@ -33,7 +39,7 @@ public class ShortUrlServiceImpl implements ShortUrlService{
 		shortUrlEntity.setUrl(shortUrl);
 		shortUrlEntity.setHash(hash);
 		
-		shortUrlDAO.saveShortUrl(shortUrlEntity);
+		//shortUrlDAO.saveShortUrl(shortUrlEntity);
 		
 		ShortUrlResponseDto shortUrlResponseDto = new ShortUrlResponseDto(orgUrl, shortUrl);
 		LOGGER.info("[generateShortUrl] Response DTO : {}", shortUrlResponseDto.toString());
@@ -84,10 +90,24 @@ public class ShortUrlServiceImpl implements ShortUrlService{
 		
 		LOGGER.info("[requestShortUrl] set HTTP Request Header");
 		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(new MediaType[] {Media))
+		headers.setAccept(Arrays.asList(new MediaType[] {MediaType.APPLICATION_JSON}));
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("X-Naver-Client-Id", clientId);
+		headers.set("X-Naver-Client-Secret", clientSecret);
 		
-		// 작성중
+		// 바디와 헤더 조합해주는 객체 : new HttpEntity<>(body, headers);
+		HttpEntity<String> entity = new HttpEntity<>("", headers);
 		
+		RestTemplate restTemplate = new RestTemplate();
+		
+		LOGGER.info("[requestShortUrl] request by restTemplate");
+		// get메서드로 호출, entity를 담아서 NaverUriDto의 형태로 리턴받겠다
+		
+		ResponseEntity<NaverUriDto> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, entity, NaverUriDto.class);
+		
+		LOGGER.info("[requestShortUrl] request has been successfully complate.");
+		
+		return responseEntity;
 	}
 	
 
