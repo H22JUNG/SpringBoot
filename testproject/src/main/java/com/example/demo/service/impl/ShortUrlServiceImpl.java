@@ -5,11 +5,13 @@ import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,9 +21,17 @@ import com.example.demo.data.dto.ShortUrlResponseDto;
 import com.example.demo.data.entity.ShortUrlEntity;
 import com.example.demo.service.ShortUrlService;
 
+@Service
 public class ShortUrlServiceImpl implements ShortUrlService{
 
 	private final Logger LOGGER = LoggerFactory.getLogger(ShortUrlServiceImpl.class);
+	private final ShortUrlDAO shortUrlDAO;
+	
+	@Autowired
+	public ShortUrlServiceImpl(ShortUrlDAO shortUrlDAO) {
+		this.shortUrlDAO = shortUrlDAO;
+	}
+	
 	
 	// api로 shorturl 요청하여 값을 받아옴, DB에 저장(DTO -> Entity)
 	@Override
@@ -39,7 +49,7 @@ public class ShortUrlServiceImpl implements ShortUrlService{
 		shortUrlEntity.setUrl(shortUrl);
 		shortUrlEntity.setHash(hash);
 		
-		//shortUrlDAO.saveShortUrl(shortUrlEntity);
+		shortUrlDAO.saveShortUrl(shortUrlEntity);
 		
 		ShortUrlResponseDto shortUrlResponseDto = new ShortUrlResponseDto(orgUrl, shortUrl);
 		LOGGER.info("[generateShortUrl] Response DTO : {}", shortUrlResponseDto.toString());
@@ -51,8 +61,31 @@ public class ShortUrlServiceImpl implements ShortUrlService{
 	// DB조회 후 shortUrl 리턴, DB에 값이 없다면 generateShortUrl() 호출
 	@Override
 	public ShortUrlResponseDto getShortUrl(String clientId, String clientSecret, String originalUrl) {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[getShortUrl] request data : {}", originalUrl);
+		
+		ShortUrlEntity getShortUrlEntity = shortUrlDAO.getShortUrl(originalUrl);
+		
+		String orgUrl;
+		String shortUrl;
+		
+		// null일 경우 값을 넣어줘야하는데, uk가 있어서 들어가지는 않음(참고용)
+		if(getShortUrlEntity == null) {
+			LOGGER.info("[getShortUrl] No Entity in Database.");
+			ResponseEntity<NaverUriDto> responseEntity = requestShortUrl(clientId, clientSecret, originalUrl);
+			
+			orgUrl = responseEntity.getBody().getResult().getOrgUrl();
+			shortUrl = responseEntity.getBody().getResult().getUrl();
+			
+		} else {
+			orgUrl = getShortUrlEntity.getOrgUrl();
+			shortUrl = getShortUrlEntity.getUrl();
+		}
+		
+		ShortUrlResponseDto shortUrlResponseDto = new ShortUrlResponseDto(orgUrl, shortUrl);
+		
+		LOGGER.info("[getShortUrl] Response DTO : {}", shortUrlResponseDto);
+
+		return shortUrlResponseDto;
 	}
 
 

@@ -23,7 +23,7 @@ public class ShortUrlController {
 	@Value("${test.prj.short.url.id}")
 	private String CLIENT_ID;
 	
-	@Value("${test.prj.short.url.secret")
+	@Value("${test.prj.short.url.secret}")
 	private String CLIENT_SECRET;
 	
 	ShortUrlService shortUrlService;
@@ -31,7 +31,7 @@ public class ShortUrlController {
 	@Autowired
 	public ShortUrlController(ShortUrlService shortUrlService) {
 		this.shortUrlService = shortUrlService;
-	}
+	}   
 	
 	@PostMapping
 	public ShortUrlResponseDto generateShortUrl(String originalUrl) {
@@ -43,10 +43,10 @@ public class ShortUrlController {
 	
 	@GetMapping()
 	public ShortUrlResponseDto getShortUrl(String originalUrl) {
-		ShortUrlResponseDto shortUrlResponseDto = new ShortUrlResponseDto("ss", "ss");
+		//ShortUrlResponseDto shortUrlResponseDto = new ShortUrlResponseDto("ss", "ss");
 		
 		return shortUrlService.getShortUrl(CLIENT_ID, CLIENT_SECRET, originalUrl);
-	}
+	} 
 	
 	@PutMapping("/")
 	public ShortUrlResponseDto updateShortUrl(String originalUrl) { return null; }
