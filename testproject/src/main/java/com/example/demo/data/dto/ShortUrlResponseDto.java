@@ -1,5 +1,6 @@
 package com.example.demo.data.dto;
 
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,7 @@ import lombok.ToString;
 @Builder
 public class ShortUrlResponseDto {
 	
+	@Id
 	private String orgUrl;
 	
 	private String shortUrl;
