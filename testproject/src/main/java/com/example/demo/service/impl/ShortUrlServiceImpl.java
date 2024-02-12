@@ -97,15 +97,27 @@ public class ShortUrlServiceImpl implements ShortUrlService{
 	}
 
 	@Override
-	public ShortUrlResponseDto deleteByShortUrl(String clientId) {
-		// TODO Auto-generated method stub
-		return null;
+	public void deleteShortUrl(String url) {
+		// url에 me2.do가 포함되면 shortUrl로 간주, shortUrl을 삭제
+		if(url.contains("me2.do")) {
+			LOGGER.info("[deleteShortUrl] Request Url is 'ShortUrl'.");
+			deleteByShortUrl(url);
+		} else {
+			// 그 외에는 originalUrl 삭제
+			LOGGER.info("[deleteShortUrl] Request Url is 'OriginalUrl'.");
+			deleteByOriginalUrl(url);
+		}
 	}
-
-	@Override
-	public ShortUrlResponseDto deleteByOriginalUrl(String originalUrl) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	
+	private void deleteByShortUrl(String url) {
+		LOGGER.info("[deleteByShortUrl] delete record");
+		shortUrlDAO.deleteByShortUrl(url);
+	}
+	
+	private void deleteByOriginalUrl(String url) {
+		LOGGER.info("[deleteByOriginalUrl] delete record");
+		shortUrlDAO.deleteByOriginalUrl(url);
 	}
 	
 	
