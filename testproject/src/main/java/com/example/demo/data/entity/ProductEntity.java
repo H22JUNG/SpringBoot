@@ -3,6 +3,8 @@ package com.example.demo.data.entity;
 import com.example.demo.data.dto.ProductDto;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,9 +21,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Table(name = "product")
-public class ProductEntity {
+public class ProductEntity extends BaseEntity {
 
 	@Id		// pk
+	// @GeneratedValue(strategy = GenerationType.IDENTITY) Long타입일 경우 자동 생성
 	String productId;
 	String productName;
 	Integer productPrice;
